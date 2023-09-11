@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import { faSquare, faSquareCheck } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 
 export const BenchPress = () => {
-  const [maxWeight, setMaxWeight] = useState<number>(0);
+  const [maxWeight, setMaxWeight] = useState("");
   const [schedules, setSchedules] = useState([
     { title: "Day1", weights: [0.55, 0.6, 0.65, 0.7, 0.75], results: [0, 0, 0, 0, 0] },
     { title: "Day2", weights: [0.6, 0.65, 0.7, 0.75, 0.8], results: [0, 0, 0, 0, 0] },
@@ -21,13 +23,15 @@ export const BenchPress = () => {
     { title: "Day15", weights: [0.75, 0.8, 0.85, 0.9, 0.95], results: [0, 0, 0, 0, 0] },
     { title: "Day16", weights: [0.8, 0.85, 0.9, 0.95, 1.0], results: [0, 0, 0, 0, 0] },
   ]);
+  const [checkedRows, setCheckedRows] = useState([]);
 
-  const handleSetWeight = (e: number) => {
-    setMaxWeight(e);
+  const handleSetWeight = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMaxWeight(e.target.value);
+    setCheckedRows([]);
   };
 
-  const roundToNearestMultiple = (value, multiple) => {
-    return Math.floor(value / multiple) * multiple;
+  const roundToNearestMultiple = (value: number, multiple: number) => {
+    return Math.round(value / multiple) * multiple;
   };
 
   const generateSchedule = () => {
@@ -41,23 +45,57 @@ export const BenchPress = () => {
       return { ...schedule, results: updatedWeights };
     });
     setSchedules(updatedSchedules);
+    if (maxWeight) {
+      localStorage.setItem("maxWeight", maxWeight);
+    }
+    // localStorage.setItem("schedules", JSON.stringify(schedules));
   };
+
+  const handleCheck = (index: number) => {
+    const updateCheckedRows = [...checkedRows];
+
+    if (updateCheckedRows.includes(index)) {
+      const rowIndex = updateCheckedRows.indexOf(index);
+      updateCheckedRows.splice(rowIndex, 1);
+    } else {
+      updateCheckedRows.push(index);
+    }
+    setCheckedRows(updateCheckedRows);
+    localStorage.setItem("checkedRows", JSON.stringify(updateCheckedRows));
+  };
+
+  const isRowChecked = (index) => {
+    return checkedRows.includes(index);
+  };
+
+  useEffect(() => {
+    const storedMaxWeight = localStorage.getItem("maxWeight");
+    if (storedMaxWeight !== null) {
+      setMaxWeight(storedMaxWeight);
+    }
+
+    const storedCheckedRows = localStorage.getItem("checkedRows");
+    if (storedCheckedRows !== null) {
+      setCheckedRows(JSON.parse(storedCheckedRows));
+    }
+
+    generateSchedule();
+  }, []);
 
   return (
     <div className="space-y-2">
       <p className="text-xs text-slate-400">Enter your current Single Rep Max (SRM)</p>
       <div className="flex relative">
-        <input className="border-b border-slate-400 w-24 text-center text-lg" type="number" placeholder="100" onChange={(e) => handleSetWeight(e.target.value)} />
+        <input className="border-b border-slate-400 w-24 text-center text-lg" type="number" placeholder="100" value={maxWeight} onChange={handleSetWeight} />
         <p className="absolute bottom-1 translate-x-20">kg</p>
         <button className="bg-rose-500 rounded-md p-1 ml-4 text-white" onClick={generateSchedule}>
           create
         </button>
       </div>
-      <div className="border border-slate-200 rounded-lg overflow-hidden">
+      <div className="border border-slate-200 rounded-lg  overflow-scroll">
         <table className="text-center text-sm  w-full">
           <thead className="bg-rose-400 h-12">
             <tr className="text-white">
-              <th></th>
               <th>Day</th>
               <th>Set1</th>
               <th>Set2</th>
@@ -68,9 +106,11 @@ export const BenchPress = () => {
           </thead>
           <tbody className="-mt-1">
             {schedules.map((schedule, index) => (
-              <tr key={schedule.title} className="border-t border-slate-200 ">
-                <input type="checkbox" className="" />
-                <th className="py-3 font-normal">{schedule.title}</th>
+              <tr key={schedule.title} className={`border-t border-slate-200 ${isRowChecked(index) ? "opacity-50" : ""} `}>
+                <th className="py-3  font-normal flex items-center justify-center">
+                  <FontAwesomeIcon icon={isRowChecked(index) ? faSquareCheck : faSquare} className="mr-2 text-lg" onClick={() => handleCheck(index)} />
+                  {schedule.title}
+                </th>
                 {schedule.results.map((result, index) => (
                   <td key={index}>{result}×5</td>
                 ))}
