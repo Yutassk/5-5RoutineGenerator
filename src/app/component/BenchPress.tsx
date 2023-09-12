@@ -96,7 +96,7 @@ export const BenchPress = () => {
     <div className="space-y-2">
       <p className="text-xs text-slate-400">Enter your current Single Rep Max (SRM)</p>
       <div className="flex relative">
-        <input className="border-b border-slate-400 w-24 text-center text-lg" type="number" placeholder="100" value={maxWeight} onChange={handleSetWeight} />
+        <input className="border-b border-slate-400 w-24 text-center text-lg" type="number" step={0.5} placeholder="100" value={maxWeight} onChange={handleSetWeight} />
         <p className="absolute bottom-1 translate-x-20">kg</p>
         <button className="bg-rose-500 rounded-md p-1 ml-4 text-white" onClick={generateSchedule}>
           create
