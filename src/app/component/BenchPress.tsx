@@ -7,6 +7,7 @@ type Schedule = { title: string; weights: number[]; results: number[] };
 
 export const BenchPress = () => {
   const [maxWeight, setMaxWeight] = useState<string>("");
+  const [checkedRows, setCheckedRows] = useState<number[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([
     { title: "Day1", weights: [0.55, 0.6, 0.65, 0.7, 0.75], results: [0, 0, 0, 0, 0] },
     { title: "Day2", weights: [0.6, 0.65, 0.7, 0.75, 0.8], results: [0, 0, 0, 0, 0] },
@@ -25,20 +26,21 @@ export const BenchPress = () => {
     { title: "Day15", weights: [0.75, 0.8, 0.85, 0.9, 0.95], results: [0, 0, 0, 0, 0] },
     { title: "Day16", weights: [0.8, 0.85, 0.9, 0.95, 1.0], results: [0, 0, 0, 0, 0] },
   ]);
-  const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
+  // inputに入力された文字をstateに保存
   const handleSetWeight = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputWeight = e.target.value;
-
-    setMaxWeight(inputWeight);
+    setMaxWeight(e.target.value);
     setCheckedRows([]);
   };
 
+  // 重量計算で使う式
   const roundToNearestMultiple = (value: any, multiple: number) => {
     return Math.round(parseFloat(value) / multiple) * multiple;
   };
 
+  // maxWeightの値に応じてスケジュール作成
   const generateSchedule = () => {
+    // 正規表現で小数点含む数字のみ許可
     if (maxWeight.match(/^\d*(.\d+)?$/)) {
       const roundedMaxWeight = roundToNearestMultiple(maxWeight, 2.5);
 
@@ -57,6 +59,7 @@ export const BenchPress = () => {
     }
   };
 
+  // チェックボックスにチェックが入っているか確認（indexと一致する番号が配列に含まれていれば削除）
   const handleCheck = (index: number) => {
     const updateCheckedRows = [...checkedRows];
 
@@ -75,7 +78,6 @@ export const BenchPress = () => {
   };
 
   useEffect(() => {
-    // if (typeof localStorage !== "undefined") {
     const storedMaxWeight = localStorage.getItem("maxWeight");
     if (storedMaxWeight !== null) {
       setMaxWeight(storedMaxWeight);
@@ -90,7 +92,6 @@ export const BenchPress = () => {
     if (initialSchedules) {
       setSchedules(JSON.parse(initialSchedules));
     }
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
