@@ -47,9 +47,17 @@ export const BenchPress = () => {
       return { ...schedule, results: updatedWeights };
     });
 
-    setSchedules(updatedSchedules);
+    if (typeof localStorage !== "undefined") {
+      const initialSchedules = localStorage.getItem("schedules");
+      if (initialSchedules) {
+        setSchedules(JSON.parse(initialSchedules));
+      }
+    } else {
+      setSchedules(updatedSchedules);
+    }
     if (maxWeight) {
       localStorage.setItem("maxWeight", maxWeight.toString());
+      localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
     }
   };
 
