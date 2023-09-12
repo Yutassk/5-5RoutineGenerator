@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 type Schedule = { title: string; weights: number[]; results: number[] };
 
 export const BenchPress = () => {
-  const [maxWeight, setMaxWeight] = useState(0);
+  const [maxWeight, setMaxWeight] = useState<string>("");
   const [schedules, setSchedules] = useState<Schedule[]>([
     { title: "Day1", weights: [0.55, 0.6, 0.65, 0.7, 0.75], results: [0, 0, 0, 0, 0] },
     { title: "Day2", weights: [0.6, 0.65, 0.7, 0.75, 0.8], results: [0, 0, 0, 0, 0] },
@@ -28,34 +28,30 @@ export const BenchPress = () => {
   const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
   const handleSetWeight = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMaxWeight(parseFloat(e.target.value));
+    const inputWeight = e.target.value;
+
+    setMaxWeight(inputWeight);
     setCheckedRows([]);
   };
 
-  const roundToNearestMultiple = (value: number, multiple: number) => {
-    return Math.round(value / multiple) * multiple;
+  const roundToNearestMultiple = (value: any, multiple: number) => {
+    return Math.round(parseFloat(value) / multiple) * multiple;
   };
 
   const generateSchedule = () => {
-    const roundedMaxWeight = roundToNearestMultiple(maxWeight, 2.5);
+    if (maxWeight.match(/^\d*(.\d+)?$/)) {
+      const roundedMaxWeight = roundToNearestMultiple(maxWeight, 2.5);
 
-    const updatedSchedules = schedules.map((schedule) => {
-      const updatedWeights = schedule.weights.map((weight) => {
-        return roundToNearestMultiple(weight * roundedMaxWeight, 2.5);
+      const updatedSchedules = schedules.map((schedule) => {
+        const updatedWeights = schedule.weights.map((weight) => {
+          return roundToNearestMultiple(weight * roundedMaxWeight, 2.5);
+        });
+
+        return { ...schedule, results: updatedWeights };
       });
 
-      return { ...schedule, results: updatedWeights };
-    });
-
-    if (typeof localStorage !== "undefined") {
-      const initialSchedules = localStorage.getItem("schedules");
-      if (initialSchedules) {
-        setSchedules(JSON.parse(initialSchedules));
-      }
-    } else {
       setSchedules(updatedSchedules);
-    }
-    if (maxWeight) {
+
       localStorage.setItem("maxWeight", maxWeight.toString());
       localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
     }
@@ -79,16 +75,22 @@ export const BenchPress = () => {
   };
 
   useEffect(() => {
+    // if (typeof localStorage !== "undefined") {
     const storedMaxWeight = localStorage.getItem("maxWeight");
     if (storedMaxWeight !== null) {
-      setMaxWeight(parseFloat(storedMaxWeight));
+      setMaxWeight(storedMaxWeight);
     }
 
     const storedCheckedRows = localStorage.getItem("checkedRows");
     if (storedCheckedRows !== null) {
       setCheckedRows(JSON.parse(storedCheckedRows));
     }
-    generateSchedule();
+
+    const initialSchedules = localStorage.getItem("schedules");
+    if (initialSchedules) {
+      setSchedules(JSON.parse(initialSchedules));
+    }
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -96,7 +98,7 @@ export const BenchPress = () => {
     <div className="space-y-2">
       <p className="text-xs text-slate-400">Enter your current Single Rep Max (SRM)</p>
       <div className="flex relative">
-        <input className="border-b border-slate-400 w-24 text-center text-lg" type="number" step={0.5} placeholder="100" value={maxWeight} onChange={handleSetWeight} />
+        <input className="border-b border-slate-400 w-24 text-center text-lg" type="text" placeholder="100" value={maxWeight} onChange={handleSetWeight} />
         <p className="absolute bottom-1 translate-x-20">kg</p>
         <button className="bg-rose-500 rounded-md p-1 ml-4 text-white" onClick={generateSchedule}>
           create
