@@ -3,9 +3,11 @@ import { faSquare, faSquareCheck } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 
+type Schedule = { title: string; weights: number[]; results: number[] };
+
 export const BenchPress = () => {
-  const [maxWeight, setMaxWeight] = useState("");
-  const [schedules, setSchedules] = useState([
+  const [maxWeight, setMaxWeight] = useState(0);
+  const [schedules, setSchedules] = useState<Schedule[]>([
     { title: "Day1", weights: [0.55, 0.6, 0.65, 0.7, 0.75], results: [0, 0, 0, 0, 0] },
     { title: "Day2", weights: [0.6, 0.65, 0.7, 0.75, 0.8], results: [0, 0, 0, 0, 0] },
     { title: "Day3", weights: [0.55, 0.6, 0.65, 0.7, 0.75], results: [0, 0, 0, 0, 0] },
@@ -23,10 +25,10 @@ export const BenchPress = () => {
     { title: "Day15", weights: [0.75, 0.8, 0.85, 0.9, 0.95], results: [0, 0, 0, 0, 0] },
     { title: "Day16", weights: [0.8, 0.85, 0.9, 0.95, 1.0], results: [0, 0, 0, 0, 0] },
   ]);
-  const [checkedRows, setCheckedRows] = useState([]);
+  const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
   const handleSetWeight = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMaxWeight(e.target.value);
+    setMaxWeight(parseFloat(e.target.value));
     setCheckedRows([]);
   };
 
@@ -44,11 +46,11 @@ export const BenchPress = () => {
 
       return { ...schedule, results: updatedWeights };
     });
+
     setSchedules(updatedSchedules);
     if (maxWeight) {
-      localStorage.setItem("maxWeight", maxWeight);
+      localStorage.setItem("maxWeight", maxWeight.toString());
     }
-    // localStorage.setItem("schedules", JSON.stringify(schedules));
   };
 
   const handleCheck = (index: number) => {
@@ -64,22 +66,22 @@ export const BenchPress = () => {
     localStorage.setItem("checkedRows", JSON.stringify(updateCheckedRows));
   };
 
-  const isRowChecked = (index) => {
+  const isRowChecked = (index: number) => {
     return checkedRows.includes(index);
   };
 
   useEffect(() => {
     const storedMaxWeight = localStorage.getItem("maxWeight");
     if (storedMaxWeight !== null) {
-      setMaxWeight(storedMaxWeight);
+      setMaxWeight(parseFloat(storedMaxWeight));
     }
 
     const storedCheckedRows = localStorage.getItem("checkedRows");
     if (storedCheckedRows !== null) {
       setCheckedRows(JSON.parse(storedCheckedRows));
     }
-
     generateSchedule();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
