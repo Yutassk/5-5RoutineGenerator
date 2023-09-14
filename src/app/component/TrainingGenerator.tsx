@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 type Schedule = { title: string; weights: number[]; results: number[] };
 
-export const BenchPress = () => {
+export const TrainingGenerator = () => {
   const [maxWeight, setMaxWeight] = useState<string>("");
   const [checkedRows, setCheckedRows] = useState<number[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([
