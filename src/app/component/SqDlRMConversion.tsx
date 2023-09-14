@@ -1,6 +1,6 @@
 import React from "react";
 
-export const BpRMConversion = () => {
+export const SqDlRMConversion = () => {
   const rmTables = [];
 
   const titleRow = {
@@ -12,16 +12,16 @@ export const BpRMConversion = () => {
   for (let weight = 40; weight <= 300; weight += 2.5) {
     let rmValue = [];
     for (let rm = 2; rm < 13; rm++) {
-      const calc = (weight * rm) / 40 + weight;
-      rmValue.push(Math.ceil(calc));
+      const calc = (weight * rm) / 33.3 + weight;
+      rmValue.push(Math.round(calc));
     }
     rmTables.push({ weights: weight, rms: rmValue });
   }
 
   return (
     <div>
-      <h3 className="border-l-8 border-slate-800 ps-2 my-6 font-bold">ベンチプレス</h3>
-      <p className="font-bold  decoration-yellow-200 decoration-8 underline-offset-[-2px] underline mb-6 ">最大挙上重量 = 重量 × 回数 ÷ 40 + 重量</p>
+      <h3 className="border-l-8 border-slate-800 ps-2 my-6 font-bold">スクワット・デッドリフト</h3>
+      <p className="font-bold  decoration-yellow-200 decoration-8 underline-offset-[-2px] underline mb-6 ">最大挙上重量 = 重量 × 回数 ÷ 33.3 + 重量</p>
       <p className="mb-6">
         RM（Repetition
         Maximum）は、ボディビルディングやパワーリフティングで非常に重要な概念です。RMは、あなたが特定の重量を持って何回リフトできるかを示す指標です。これは、筋肉の強度や持久力を評価し、トレーニングプログラムを設計する際に役立ちます。例えば、ベンチプレスで60kgを1回だけ持ち上げることができる場合、あなたの1RMは60kgです。
