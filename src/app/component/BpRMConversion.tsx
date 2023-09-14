@@ -23,8 +23,8 @@ export const BpRMConversion = () => {
       <h3 className="border-l-8 border-slate-900 ps-2 my-6 font-bold">ベンチプレス</h3>
       <p className="font-bold  decoration-yellow-200 decoration-8 underline-offset-[-2px] underline mb-6 ">最大挙上重量 = 重量 × 回数 ÷ 40 + 重量</p>
       <p className="mb-6">
-        カラダづくりの基本と言われる「ベンチプレス」「スクワット」「デッドリフト」の『BIG3』における、最大挙上重量（いわゆる1RM [Repetition Maximum] =
-        1回しか反復できない重さ）の合計値を算出しよう。下記【RM換算表】最左列の「重量」を選び、その重さを挙げられる「回数」を計測すると、両者が交差する欄の数値が各種目のRMを表している。
+        RM（Repetition
+        Maximum）は、ボディビルディングやパワーリフティングで非常に重要な概念です。RMは、あなたが特定の重量を持って何回リフトできるかを示す指標です。これは、筋肉の強度や持久力を評価し、トレーニングプログラムを設計する際に役立ちます。例えば、ベンチプレスで60kgを1回だけ持ち上げることができる場合、あなたの1RMは60kgです。
       </p>
       <div className="h-[calc(100vh/3)] overflow-scroll">
         <table className="border border-slate-200 text-center m-auto ">
