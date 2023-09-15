@@ -4,7 +4,7 @@ import RMTabs from "../component/RMTabs";
 
 const RmCalc = () => {
   return (
-    <div className="w-full m-auto text-slate-900">
+    <div className="w-full max-w-3xl m-auto text-slate-900">
       <Header />
       <div className="mx-4">
         <h1 className="font-bold border-b-2 border-slate-900 mt-8 mb-14">RM換算表</h1>

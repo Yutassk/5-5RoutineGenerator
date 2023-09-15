@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="w-full m-auto">
+    <div className="w-full m-auto max-w-3xl">
       <Header />
       <div className="mx-2">
         <TrainingGenerator />
