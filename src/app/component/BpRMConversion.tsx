@@ -21,18 +21,14 @@ export const BpRMConversion = () => {
   return (
     <div>
       <h3 className="border-l-8 border-slate-800 ps-2 my-6 font-bold">ベンチプレス</h3>
-      <p className="font-bold  decoration-yellow-200 decoration-8 underline-offset-[-2px] underline mb-6 ">最大挙上重量 = 重量 × 回数 ÷ 40 + 重量</p>
-      <p className="mb-6">
-        RM（Repetition
-        Maximum）は、ボディビルディングやパワーリフティングで非常に重要な概念です。RMは、あなたが特定の重量を持って何回リフトできるかを示す指標です。これは、筋肉の強度や持久力を評価し、トレーニングプログラムを設計する際に役立ちます。例えば、ベンチプレスで60kgを1回だけ持ち上げることができる場合、あなたの1RMは60kgです。
-      </p>
-      <div className="h-[calc(100vh/3)] overflow-scroll">
-        <table className="border border-slate-200 text-center m-auto ">
+      <p className="font-bold  decoration-yellow-200 decoration-8 underline-offset-[-2px] underline mb-6 ">最大挙上重量 (RM) = 重量 × 回数 ÷ 40 + 重量</p>
+      <div className="h-[calc(100vh/3)] overflow-scroll border border-slate-200 ">
+        <table className="text-center m-auto">
           <thead className="">
             <tr className="">
-              <th className=" py-2 border-2 border-slate-200 font-medium text-sm sticky top-0 left-0 z-50 bg-slate-600 text-white">{titleRow.title}</th>
+              <th className=" py-2 border-2 border-slate-200 font-medium text-sm sticky top-0 left-0 z-50 bg-slate-800 text-white">{titleRow.title}</th>
               {titleRow.reps.map((rep, index) => (
-                <th className="px-4 border-2 border-slate-200 font-medium text-sm sticky top-0 left-0 bg-slate-600 text-white " key={index}>
+                <th className="px-4 border-2 border-slate-200 font-medium text-sm sticky top-0 left-0 bg-slate-800 text-white " key={index}>
                   {rep}
                 </th>
               ))}
@@ -41,7 +37,7 @@ export const BpRMConversion = () => {
           <tbody>
             {rmTables.map((table) => (
               <tr key={table.weights}>
-                <th className="px-5 border-2 border-slate-200 bg-slate-600 text-white font-normal text-sm sticky left-0">{table.weights}</th>
+                <th className="px-5 border-2 border-slate-200 bg-slate-800 text-white font-normal text-sm sticky left-0">{table.weights}</th>
                 {table.rms.map((rm) => (
                   <td className="border-2 border-slate-200" key={rm}>
                     {rm}
