@@ -7,7 +7,6 @@ export const SqDlRMConversion = () => {
     title: "重量/回数",
     reps: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   };
-  //   rmTables.push(titleRow);
 
   for (let weight = 40; weight <= 300; weight += 2.5) {
     let rmValue = [];
@@ -24,9 +23,9 @@ export const SqDlRMConversion = () => {
       <p className="font-bold  decoration-yellow-200 decoration-8 underline-offset-[-2px] underline mb-6 ">最大挙上重量 (RM) = 重量 × 回数 ÷ 33.3 + 重量</p>
 
       <div className="h-[calc(100vh/3)] overflow-scroll">
-        <table className="border border-slate-200 text-center m-auto ">
-          <thead className="">
-            <tr className="">
+        <table className="border border-slate-900 text-center m-auto ">
+          <thead>
+            <tr>
               <th className=" py-2 border-2 border-slate-200 font-medium text-sm sticky top-0 left-0 z-50 bg-slate-800 text-white">{titleRow.title}</th>
               {titleRow.reps.map((rep, index) => (
                 <th className="px-4 border-2 border-slate-200 font-medium text-sm sticky top-0 left-0 bg-slate-800 text-white " key={index}>
